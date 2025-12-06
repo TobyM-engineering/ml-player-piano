@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="media/piano_photo.jpg" width="700">
+</p>
+
 # ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
 > ⚠️This repository is not fully documented yet. More details, diagrams, and code explanations will be added soon. 
 > 🎥 Curious what this project looks like in action?  
