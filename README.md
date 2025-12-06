@@ -45,7 +45,8 @@ When I got it from OfferUp, the system was:
 - non-functional  
 - missing tubing and bellows  
 - partially burned  
-- too heavy to move without fully disassembling it  
+- too heavy to move without fully disassembling it
+- $20
 
 I rebuilt the piano structurally, but the original player system was beyond repair.  
 So instead, I designed and built a **modern, fully electronic self-playing system**, turning an antique into a hybrid electromechanical instrument.
