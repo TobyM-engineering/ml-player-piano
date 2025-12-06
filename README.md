@@ -9,10 +9,12 @@
 ### 🎥 Demo Videos
 - **[Demo 1](media/IMG_6648%20%281%29.mov)** – A quick demo showing that I can play the piano manually while the system plays notes at the same time.
 
+- **[Demo 2](media/IMG_6644.MOV)** – Full-speed performance of the intro to *Moonlight Sonata*, showing the entire piano as the system plays the piece smoothly and accurately.
+
+- **[Demo 3](media/IMG_6645.MOV)** – Close-up view of the solenoids in action during *Moonlight Sonata*, demonstrating the mechanical precision and synchronized movement of the actuators.
 
 
 
-- 
 ### 📸 System Photos
 <img src="media/IMG_6649.jpg" width="600">
 
