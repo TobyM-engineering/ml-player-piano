@@ -240,19 +240,9 @@ BLE / USB MIDI → midi_handler → scheduler
 
 Temperature sensor → safety_logic → derating / shutoff
 User controls → main loop → UI + mode routing
-```
-
 ---
 
-# 5. Future Improvements
-- Full real-time ML inference on ESP32  
-- Soft/sostenuto pedal support  
-- Per-key auto-calibration routine  
-- Better thermal modeling  
-
----
-
-# 6. Summary
+# 5. Summary
 This project transforms a damaged early-1900s pneumatic player piano into a modern, ML-enhanced, fully electromechanical instrument. The architecture blends:
 
 - Embedded systems engineering  
