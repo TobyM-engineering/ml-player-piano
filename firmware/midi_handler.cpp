@@ -1,3 +1,7 @@
+Low-level MIDI byte parser and event queue. Handles:
 
-// MIDI handler (placeholder)
-// Full implementation will be added later.
+Running status
+
+Note On / Note Off / velocity
+
+Channel filtering / routing for left vs. right hand
