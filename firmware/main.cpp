@@ -1,3 +1,21 @@
+// main.cpp — ML Player Piano firmware entry point
+//
+// This file currently contains the full working firmware for the ESP32-based
+// player piano:
+//
+//  - BLE-MIDI server and message parsing
+//  - I²C setup for 6× PCA9685 boards + OLED UI
+//  - Solenoid strike timing / PWM control
+//  - Temperature monitoring and derating
+//  - Left / Right hand volume splits and octave shift UI
+//  - Panic button + automatic PCA recovery
+//
+// I will update it with following modules coming soon :
+//
+//    midi_handler.cpp   → BLE-MIDI parsing and event buffering
+//    pwm_controller.cpp → velocity→PWM mapping and pulse / recovery logic
+//    safety_logic.cpp   → panic handling, stuck-note detection, PCA recovery
+
 #define DEBUG_PCA_SAFETY 1
 #include <Arduino.h>
 #include <Wire.h>
