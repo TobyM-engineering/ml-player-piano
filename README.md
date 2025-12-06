@@ -5,7 +5,7 @@
 # ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
 > ⚠️This repository is not fully documented yet. More details, diagrams, and code explanations will be added soon. 
 > 🎥 Curious what this project looks like in action?  
-> Check out the demo videos in the **media/** folder!
+> Check out the demo videos!
 ### 🎥 Demo Videos
 - **[Demo 1](media/IMG_6648%20%281%29.mov)** – A quick demo showing that I can play the piano manually while the system plays notes at the same time.
 
