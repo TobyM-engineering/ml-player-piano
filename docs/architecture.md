@@ -1,226 +1,251 @@
 ML Player Piano — System Architecture
 
-This document describes the full hardware and firmware architecture of the custom ESP32-powered player piano system. It covers the electronics, solenoid control network, firmware modules, MIDI pipeline, and machine-learning calibration workflow used to drive accurate piano key actuation.
+This document describes the full hardware and firmware architecture of the custom ESP32-powered player piano system. It outlines the electronics, solenoid control network, firmware modules, MIDI event pipeline, and machine-learning calibration workflow.
 
 1. Hardware Architecture
-Microcontroller (ESP32)
+1.1 Microcontroller (ESP32)
 
-Primary controller for the entire system
-
-Handles:
+Responsibilities
 
 BLE MIDI input
 
-USB MIDI (optional)
+USB MIDI input (optional)
 
-I²C communication with all PCA9685 boards
+I²C bus management (PCA9685 drivers + OLED display)
 
-OLED UI rendering
+Reading analog controls (volume knobs, switches)
 
-Reading analog inputs (volume knobs, mode switches)
+Temperature monitoring
 
-Running the safety loop and PWM scheduling
+Running safety loop + PWM scheduling
 
-Solenoid Control System
+Rendering on-screen UI
 
-6× PCA9685 16-channel PWM drivers
+1.2 Solenoid Actuation System
+PCA9685 PWM Drivers
 
-96 channels available
+6× PCA9685 boards
 
-~88 piano keys + 1–2 pedal actuators used
+16 channels each → 96 total channels
 
-Solenoids driven through logic-level MOSFET boards
+~88 piano keys + sustain pedal
 
-PCA boards daisy-chained on I²C
+Connected via daisy-chained I²C addresses
 
-Active-low MOSFET design (LOW = fire)
+Each PCA channel outputs PWM → MOSFET gate
 
-Actuators
+MOSFET Driver Boards
 
-Individual solenoid per key
+Logic-level MOSFETs
 
-Solenoids mounted below key levers using custom aluminum rod extensions
+Active-low trigger design
 
-Sustain pedal actuated with a high-force solenoid
+Drive 12V solenoid load safely
 
-Inputs / Controls
+Solenoids
 
-Two volume knobs
+One solenoid per key
 
-Left hand volume
+Mounted under the key levers using custom rod linkages
 
-Right hand volume
+Sustain pedal solenoid is a larger high-force actuator
 
-Play Mode Switch
+1.3 User Inputs & Controls
 
-LEFT / BOTH / RIGHT
+Left Volume Knob — scales left-hand MIDI velocities
 
-Octave Shift Switch
+Right Volume Knob — scales right-hand MIDI velocities
 
-–3 to +3 semitone shifts
+Play Mode Switch — LEFT / BOTH / RIGHT
 
-Panic Button
+Octave Shift Switch — –3 to +3
 
-Instantly turns off every key
+Panic Button — instant all-notes-off + PCA reset
 
-Reinitializes PCA drivers
+OLED I²C Display — modes, temperature, status
 
-I²C OLED Display
-
-System info
-
-Active mode
-
-Current temperature
-
-Status messages
-
-Temperature Monitoring
+1.4 Temperature Monitoring
 
 DS18B20 temperature sensor mounted near MOSFET rail
 
-Used to automatically reduce PWM when overheating begins
+Firmware automatically:
 
-Power System
+reduces PWM duty cycle when hot
 
-12V high-current supply powering all solenoids
+prevents thermal overload
 
-5V/3.3V regulated supply for ESP32 + sensors
+1.5 Power Distribution
 
-PCA boards powered separately for isolation
+12V high-current supply for solenoids
 
-Shared ground across the whole system
+5V / 3.3V regulated supply for ESP32 + sensors
+
+PCA boards powered separately for noise isolation
+
+Shared ground across the entire system
 
 2. Firmware Architecture
 
-Firmware is organized into four major modules:
+Firmware is organized into four core modules:
 
-main.cpp
+2.1 main.cpp — System Core
 
-Initializes all buses (I²C, OneWire, BLE)
+Initializes:
 
-Boots PCA boards safely by forcing all channels OFF
+I²C bus
 
-Reads:
+BLE MIDI server
 
-volume knobs
+PCA9685 drivers (forces all channels OFF at boot)
 
-mode switch
+Temperature sensing
 
-octave switch
+UI display
 
-temperature sensor
+Runtime Responsibilities
 
-Updates the OLED UI
+Reads analog inputs (volume knobs)
 
-Runs the main scheduler loop:
+Reads mode + octave switches
 
-process MIDI messages
+Updates OLED UI
 
-apply safety logic
+Processes queued MIDI events
 
-send PWM pulses to PCA
+Calls PWM controller
 
-handle note repeat timing
+Executes safety logic
 
-midi_handler.cpp
+Handles solenoid scheduling loop at high rate
+
+2.2 midi_handler.cpp — MIDI Processing
+
+Functions
 
 Receives BLE MIDI packets
 
 Decodes Note On / Note Off messages
 
-Treats all MIDI channels equally but routes notes by:
+Handles running status + multi-byte packets
 
-Left-hand range
+Aggregates all MIDI channels into a single piano bus
 
-Right-hand range
+Routes notes based on:
 
-Applies octave shift
+left-hand note range
 
-Applies per-hand volume control
+right-hand note range
 
-Handles rapid sequential Note On events to avoid missed keys
+Applies:
 
-pwm_controller.cpp
+octave shift
 
-Converts MIDI velocity → PWM duty cycle
+per-hand volume curves
 
-Applies dynamic pulse-length mapping
+Handles rapid note repetitions without missing events
 
-Implements:
+2.3 pwm_controller.cpp — Solenoid Drive Logic
 
-startup pulse (maximum force)
+Responsible for converting velocity → PWM waveforms
 
-velocity pulse (scaled)
+Includes:
 
-hold pulse (prevents clicking)
+Startup pulse (max force to begin motion)
 
-Ensures solenoid cooldown timing
+Scaled velocity pulse (hit strength)
 
-Manages simultaneous note strikes across all PCA boards
+Hold pulse (continuous actuation without clicking)
 
-safety_logic.cpp
+Other duties
 
-Automatically shuts off stuck notes
+Manages cooldown time per key
 
-Detects unresponsive PCA boards and reinitializes them
+Ensures safe multi-key simultaneity
 
-Temperature-based derating:
+Communicates final PWM signal to the correct PCA board/channel
 
-progressively lowers PWM when hot
+2.4 safety_logic.cpp — Protection & Recovery
 
-Global panic system:
+Monitors system health and prevents hardware damage.
 
-disables all channels instantly
+Features
 
-blocks incoming MIDI
+Stuck-note detection
 
-resets PCA drivers
+PCA board timeout detection + auto-reinit
 
-clears all event queues
+Temperature-based PWM derating
 
-3. ML Calibration Workflow
+Solenoid overuse detection
 
-Machine learning is used to generate better mappings between MIDI velocity and solenoid pulse width.
+Global panic routine:
 
-Data Sources
+kills all PWM outputs
 
-Real measurements:
+blocks new MIDI
 
-Solenoid force vs pulse width
+resets PCA hardware
 
-Note loudness (dB) vs pulse width
+clears note buffers
 
-Velocity vs key travel time
+3. Machine Learning Calibration Workflow
 
-Workflow
+Machine learning is used to generate smooth mappings from MIDI velocity to real solenoid behavior.
 
-Load and clean datasets inside model_training.ipynb
+3.1 Data Sources
 
-Fit regression models to smooth out velocity → pulse mappings
+Force/dB vs pulse width curves
 
-Export lookup curves
+Solenoid strike velocity measurements
 
-Convert final model into:
+Recovery time vs pulse duration
 
-A compact C++ lookup table used in firmware
+Manually collected per-note calibration values
 
-Optional on-device inference (ESP32 can run tiny models)
+3.2 Training Pipeline
 
-Purpose
+Performed inside model_training.ipynb:
 
-Create smoother dynamic response
+Load raw measurement CSV files
 
-Reduce mechanical stress on solenoids
+Clean + normalize data
 
-Improve consistency across all 88 keys
+Fit models:
 
-4. Control Flow Summary
-BLE MIDI → midi_handler → MIDI event buffer 
-                 ↓
-   velocity + mapping → pwm_controller → PCA9685 drivers
-                 ↓
-       MOSFET boards → Solenoids → Piano keys
+Linear regression
 
-Temp sensor → safety_logic → PWM derating + shutdown
-User inputs → main loop → UI + mode switching
+Polynomial fit
+
+(Optional) gradient-boosting regression
+
+Visualize predicted curves
+
+Export:
+
+C++ lookup tables
+
+or serialized model for possible on-device use
+
+3.3 Purpose of ML Calibration
+
+Achieve smoother dynamic response
+
+Reduce mechanical stress
+
+Improve consistency between keys
+
+Compensate for hardware variation
+
+4. Control Flow Diagram
+––––––––––––––––––––––––––––––––––––––––––––––––––––
+   BLE MIDI → midi_handler → event buffer
+                     ↓
+      pwm_controller (velocity mapping)
+                     ↓
+         PCA9685 drivers → MOSFET boards
+                     ↓
+          Solenoids → Key Levers → Piano Sound
+––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Sensors → safety_logic → thermal derating / shutdown  
+User Inputs → main loop → UI + mode handling
