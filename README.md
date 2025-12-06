@@ -7,7 +7,8 @@
 > 🎥 Curious what this project looks like in action?  
 > Check out the demo videos in the **media/** folder!
 ### 🎥 Demo Videos
-- [Demo 3](media/IMG_6648%20%281%29.mov)
+- **[Demo 1](media/IMG_6648%20%281%29.mov)** – A quick demo showing that I can play the piano manually while the system plays notes at the same time.
+
 
 
 
