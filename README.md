@@ -1,4 +1,5 @@
 # ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
+> ⚠️This repository is not fully documented yet. More details, diagrams, and code explanations will be added soon.
 
 This project is a full electro-mechanical system that turns a normal upright piano into a self-playing instrument using **MIDI, solenoids, machine-learning-assisted velocity mapping, and ESP32 firmware**.
 
