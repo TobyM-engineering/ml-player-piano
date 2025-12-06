@@ -27,7 +27,17 @@ This repository contains:
 - Firmware for ESP32 + PCA9685 solenoid drivers  
 - Hardware schematics + wiring diagrams  
 - ML notebook for mapping MIDI velocity → PWM force  
-- Photos / demos of the system in action  
+- Photos / demos of the system in action
+
+- This project is a fully functional **ML-assisted 88-key player piano** built on an ESP32.  
+It features BLE-MIDI input, real-time solenoid control, temperature-aware safety logic, velocity mapping, and a predictive MIDI scheduling engine.
+
+This is my most advanced embedded systems project, combining:
+- C++ firmware design
+- Real-time control loops
+- Hardware engineering (MOSFET drivers, PCA9685 buses)
+- Machine-learning-based velocity modeling
+
 
 Anyone interested in building their own system or learning how mine works is welcome to clone or fork this repo.
 
