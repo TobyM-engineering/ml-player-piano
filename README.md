@@ -7,8 +7,8 @@
 > 🎥 Curious what this project looks like in action?  
 > Check out the demo videos in the **media/** folder!
 ### 🎥 Demo Videos
-- [Demo 1](media/demo1.mp4)
-- [Demo 2](media/demo2.mp4)
+[![Piano Demo](media/piano_photo.jpg)](media/demo3.mov)
+
 
 - 
 ### 📸 System Photos
