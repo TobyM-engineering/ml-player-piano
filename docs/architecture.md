@@ -87,7 +87,7 @@ The firmware is split into four main modules:
 3. Fit regression model:
    - Linear
    - Polynomial
-   - Gradient boosting (future)
+   - Gradient boosting
 4. Export mapping table or `.pkl` model
 5. Convert model output into:
    - C++ lookup table  
