@@ -108,3 +108,75 @@ Includes:
 ## 1. Clone the repo
 ```bash
 git clone https://github.com/TobyM-engineering/ml-player-piano.git
+
+
+2. Open the firmware
+
+Use:
+
+VS Code + PlatformIO (recommended)
+or
+
+Arduino IDE with libraries: PCA9685, OneWire, DallasTemperature, MIDI
+
+Main file: firmware/main.cpp
+
+3. Flash the ESP32
+
+Select your board
+
+Choose correct COM port
+
+Upload firmware
+
+Open Serial Monitor to verify MIDI events
+
+⚠️ Safety Warning
+
+Driving ~100 solenoids from a high-current 12V supply can be dangerous.
+Before powering anything, read:
+
+👉 docs/safety_notes.md
+
+📌 Repo Status
+
+✅ Project structure + documentation
+
+✅ Firmware modules implemented
+
+⚙️ ML velocity mapping in progress
+
+🔧 Hardware stable + long-duration testing
+
+
+ml-player-piano/
+│
+├── firmware/
+│   ├── main.cpp
+│   ├── midi_handler.cpp
+│   ├── pwm_controller.cpp
+│   └── safety_logic.cpp
+│
+├── docs/
+│   ├── architecture.md
+│   ├── midi_system.md
+│   └── safety_notes.md
+│
+├── hardware/
+│   ├── wiring_diagram.png
+│   ├── pca9685_layout.png
+│   └── solenoid_driver_schematic.jpg
+│
+├── ml-model/
+│   ├── model_training.ipynb
+│   ├── trained_model.pkl
+│   └── data/
+│       ├── sample_pressures.csv
+│       └── sample_velocities.csv
+│
+├── media/
+│   ├── IMG_6648 (1).mov
+│   ├── IMG_6644.MOV
+│   └── IMG_6645.MOV
+│
+└── README.md
