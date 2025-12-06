@@ -30,13 +30,13 @@ Anyone interested in building their own system or learning how mine works is wel
 # 🛠 System Overview
 
 ## Hardware
-- ~88 key solenoids  
+- ~88 12V 400ma 10mm stroke key solenoids  
 - 6× PCA9685 16-channel PWM drivers  
-- MOSFET boards for 12V solenoid switching  
+- 88 MOSFET boards for 12V solenoid switching  
 - ESP32 (main processor)  
 - DS18B20 temperature sensor  
-- I²C OLED display + volume knobs  
-- High-current 12V power rail  
+- I²C OLED display + volume knobs + Buttons
+- 100A 12V power rail  
 
 Hardware diagrams live in:  
 📁 `hardware/`
@@ -111,11 +111,9 @@ before powering or testing this system.
 
 ✅ Firmware skeleton added
 
-⚙️ ML velocity mapping under development
+⚙️ ML velocity not implimented into the Folder yet under development
 
-🛠 Mechanical + tuning ongoing
-
-🔬 Long-duration testing planned
+🔬 Long-duration testing - minor fixes here and there but nothing that takes more than a minute
 
 Repository Structure
 ml-player-piano/
