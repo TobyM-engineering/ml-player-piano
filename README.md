@@ -1,83 +1,155 @@
-# ML Player Piano
+[![](https://dcbadge.limes.pink/api/server/https://discord.com/invite/reenxNyht5?style=flat)](https://discord.com/invite/reenxNyht5)
 
-Machine-learning–enhanced 88-key player piano using an ESP32, six PCA9685 PWM driver boards, and high-current solenoids.
+[![](https://img.youtube.com/vi/S7Bd992k368/0.jpg)](https://www.youtube.com/watch?v=S7Bd992k368)
 
-The ESP32 receives MIDI (BLE / serial), parses the stream, and drives one solenoid per piano key. A temperature sensor and safety logic monitor the power rail so the system can run for long periods without cooking coils or hardware.
+# ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
 
-> ⚠️ This repo is **work in progress**. Firmware is actively evolving along with the mechanical design.
+This project is a full electro-mechanical system that turns a normal upright piano into a self-playing instrument using **MIDI, solenoids, machine-learning-assisted velocity mapping, and ESP32 firmware**.
 
----
+I built this project after becoming obsessed with how real player pianos work and wanting to create a version that is **affordable, modular, and repairable**, using parts most makers can source easily.
 
-## Features
+This repository contains:
+- Firmware for ESP32 + PCA9685 solenoid drivers  
+- Hardware schematics + wiring diagrams  
+- ML notebook for mapping MIDI velocity → PWM force  
+- Photos / demos of the system in action  
 
-### 88-key solenoid control
-
-- ESP32 controls up to **88 keys + sustain pedal**
-- Six PCA9685 boards (16 channels each) over I²C
-- Per-key PWM pulse control for dynamic strike force
-
-### MIDI input
-
-- Receives MIDI over Bluetooth (e.g., Synthesia on tablet / laptop)
-- Support for standard **Note On / Note Off / Velocity**
-- Channel-agnostic parsing (handles any MIDI channel)
-- Left / right hand routing and volume split (planned / partly implemented)
-
-### Real-time control UI (OLED + switches)
-
-- Dual volume controls (left / right hand) via potentiometers
-- Play-mode switch: `LEFT`, `BOTH`, `RIGHT`
-- Octave-shift switch with on-screen indicator
-- Uptime + Bluetooth status on an I²C OLED
-
-### Safety and reliability
-
-- Temperature monitoring of the solenoid power rail (DS18B20/MICREEN)
-- Global **panic button** for “all notes off”
-- Duty-cycle limiting to avoid overheating solenoids
-- Power-on reset that forces all PCA9685 outputs low
-
-### ML-assisted velocity mapping (in progress)
-
-- Collects sample data of key press force vs. dB level
-- Trains a regression model to map MIDI velocity → PWM pulse width
-- Separate datasets for **pressure tests** and **velocity mapping**
+Anyone interested in building their own system or learning how mine works is welcome to clone or fork this repo.
 
 ---
 
-## Repository structure
+# 🎹 Features
 
-```text
+- Plays any MIDI file via **Bluetooth LE MIDI** or **USB MIDI**
+- Supports **velocity-sensitive** playback (harder = louder)
+- Controls all 88 keys + sustain pedal using solenoids
+- Real-time scheduling for fast repeated notes
+- Control box support (volume, mode, panic/reset)
+- ESP32-based architecture for fast MIDI processing
+- Discreet hardware mounting — piano still works manually
+- Includes safety logic for temperature, stuck notes, and power limits
+
+---
+
+# 🛠 System Overview
+
+## Hardware
+- ~88 key solenoids  
+- 6× PCA9685 16-channel PWM drivers  
+- MOSFET boards for 12V solenoid switching  
+- ESP32 (main processor)  
+- DS18B20 temperature sensor  
+- I²C OLED display + volume knobs  
+- High-current 12V power rail  
+
+Hardware diagrams live in:  
+📁 `hardware/`
+
+---
+
+## Firmware
+Firmware is split into modules:
+
+| File | Purpose |
+|------|---------|
+| `main.cpp` | System init, BLE MIDI, loop control |
+| `midi_handler.cpp` | MIDI parsing + predictive scheduling |
+| `pwm_controller.cpp` | PCA9685 PWM control + solenoid drive |
+| `safety_logic.cpp` | Overheat detection, stuck-note recovery, panic mode |
+
+Entry point:  
+📌 `firmware/main.cpp`
+
+---
+
+## Machine Learning (WIP)
+
+Used to generate a regression model that maps:
+
+**Key velocity → PWM pulse width → consistent loudness**
+
+Includes:
+- `model_training.ipynb`
+- `trained_model.pkl`
+- Example datasets showing force/dB curves
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone the repo
+```bash
+git clone https://github.com/TobyM-engineering/ml-player-piano.git
+
+2. Open the firmware
+
+You can use:
+
+VS Code + PlatformIO (recommended)
+
+or Arduino IDE (with libraries): PCA9685, OneWire, DallasTemperature, MIDI
+
+Firmware entry file: firmware/main.cpp
+
+3. Flash the ESP32
+
+Select your ESP32 board in PlatformIO/Arduino IDE
+
+Choose the correct COM port
+
+Upload firmware
+
+Open serial monitor to verify MIDI events
+
+⚠️ Safety Warning
+
+Driving ~100 solenoids from a high-current 12V supply can be dangerous if done incorrectly.
+
+Read:
+👉 docs/safety_notes.md
+before powering or testing this system.
+
+📌 Repo Status
+
+✅ Project structure + documentation
+
+✅ Firmware skeleton added
+
+⚙️ ML velocity mapping under development
+
+🛠 Mechanical + tuning ongoing
+
+🔬 Long-duration testing planned
+
+Repository Structure
 ml-player-piano/
 │
-├── README.md
-├── LICENSE
-├── .gitignore
+├── firmware/
+│   ├── main.cpp
+│   ├── midi_handler.cpp
+│   ├── pwm_controller.cpp
+│   └── safety_logic.cpp
 │
-├── firmware/                 # Embedded firmware for the ESP32
-│   ├── main.cpp              # Core control loop, BLE, UI, temp & safety
-│   ├── midi_handler.cpp      # MIDI parsing, buffering, predictive timing
-│   ├── pwm_controller.cpp    # Velocity → PWM / solenoid pulse control
-│   └── safety_logic.cpp      # Panic handling, PCA recovery, stuck-note protection
+├── docs/
+│   ├── architecture.md
+│   ├── midi_system.md
+│   └── safety_notes.md
 │
-├── ml-model/                 # ML velocity mapping experiments
-│   ├── model_training.ipynb  # Jupyter notebook for training models
-│   ├── trained_model.pkl     # Saved regression model (placeholder / WIP)
-│   └── data/
-│       ├── sample_pressures.csv   # Example force / dB measurements
-│       └── sample_velocities.csv  # Example velocity → pulse-width samples
-│
-├── hardware/                 # Hardware drawings and schematics
+├── hardware/
 │   ├── wiring_diagram.png
 │   ├── pca9685_layout.png
 │   └── solenoid_driver_schematic.jpg
 │
-├── media/                    # Photos / demo videos
-│   ├── piano_photo.jpg
-│   ├── demo1.mp4
-│   └── demo2.mp4
+├── ml-model/
+│   ├── model_training.ipynb
+│   ├── trained_model.pkl
+│   └── data/
+│       ├── sample_pressures.csv
+│       └── sample_velocities.csv
 │
-└── docs/                     # Design documentation
-    ├── architecture.md
-    ├── midi_system.md
-    └── safety_notes.md
+├── media/
+│   ├── demo1.mp4
+│   ├── demo2.mp4
+│   └── piano_photo.jpg
+│
+└── README.md
