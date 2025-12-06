@@ -33,7 +33,7 @@ Since the 1900s pneumatic player mechanism was destroyed and partially burned, I
 ### **Front Control Panel Under the Keys**
 <img src="media/IMG_4964.jpg" width="600">
 These knobs and switches replace the old pneumatic roll levers.  
-They now control volume, mode selection (Left hand /Both hands /Right hand), octave shift, system power, and volume.
+They now control volume, mode selection (Left hand /Both hands /Right hand), octave shift, system power, and volume. (it wasn’t designed for beauty, it was designed to work:)
 
 ---
 
