@@ -12,7 +12,7 @@
 
 - 
 ### 📸 System Photos
-<img src="media/IMG_4955.jpg" width="600">
+<img src="media/IMG_4957.jpg" width="600">
 <img src="media/IMG_6651.jpg" width="600">
 
 
