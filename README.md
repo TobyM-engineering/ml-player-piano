@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="media/piano_photo.jpg" width="700">
+  <img src="media/IMG_6649.jpg" width="700">
 </p>
 
 # ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
