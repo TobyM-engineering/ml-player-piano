@@ -13,7 +13,6 @@
 - 
 ### 📸 System Photos
 <img src="media/IMG_6649.jpg" width="600">
-<img src="media/IMG_6651.jpg" width="600">
 
 
 This project is a full electro-mechanical system that turns a normal upright piano into a self-playing instrument using **MIDI, solenoids, machine-learning-assisted velocity mapping, and ESP32 firmware**.
