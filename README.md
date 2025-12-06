@@ -3,6 +3,16 @@
 > 🎥 Curious what this project looks like in action?  
 > Check out the demo videos in the **media/** folder!
 
+### 📸 System Photos
+<img src="media/IMG_4955.jpg" width="600">
+<img src="media/IMG_6650.jpg" width="600">
+<img src="media/IMG_6651.jpg" width="600">
+
+### 🎥 Demo Videos
+- [Demo 1](media/demo1.mp4)
+- [Demo 2](media/demo2.mp4)
+
+
 This project is a full electro-mechanical system that turns a normal upright piano into a self-playing instrument using **MIDI, solenoids, machine-learning-assisted velocity mapping, and ESP32 firmware**.
 
 I built this project after becoming obsessed with how real player pianos work and wanting to create a version that is **affordable, modular, and repairable**, using parts most makers can source easily.
