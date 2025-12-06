@@ -17,7 +17,9 @@
 
 ### 📸 System Photos
 <img src="media/IMG_6649.jpg" width="600">
+Veiw of system
 <img src="media/IMG_4962 (1).jpg" width="600">
+This is the screen that i 
 
 
 
