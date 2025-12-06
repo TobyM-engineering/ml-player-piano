@@ -4,7 +4,7 @@
 > Check out the demo videos in the **media/** folder!
 
 ### 📸 System Photos
-<img src="media/IMG_4955.jpg" width="600">
+<img src="media/IMG_6649.jpg" width="600">
 <img src="media/IMG_6650.jpg" width="600">
 <img src="media/IMG_6651.jpg" width="600">
 
