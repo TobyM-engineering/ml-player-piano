@@ -3,7 +3,7 @@
 </p>
 
 # ML-Assisted Player Piano
-A full electromechanical player piano system combining embedded C++, real-time MIDI processing, PCA9685-controlled solenoids, and a machine-learning velocity model trained on decibel measurements. Built to retrofit an early-1900s pneumatic piano into a modern expressive instrument.
+A full electromechanical player piano system combining embedded C++, real-time MIDI processing, PCA9685-controlled solenoids, and a machine-learning velocity model trained on decibel measurements to produce human-like dynamics. Built to retrofit an early-1900s pneumatic piano into a modern expressive instrument.
 
 > ⚠️ This repository is not fully documented yet — more diagrams, notes, and explanations will be added soon.  
 > 🎥 See it in action below!
