@@ -23,7 +23,7 @@
 
 ### **Internal View of the System**
 <img src="media/IMG_6649.jpg" width="600">
-A look inside the instrument — solenoid rails, wiring bundles, and PCA9685 distribution.
+A look inside the instrument — solenoid rails, wiring bundles, and PCA9685 distribution. (Yes, it looks like a wild nest of wires — it wasn’t designed for beauty. I promise it’s much simpler than it seems, and proper diagrams are on the way)
 
 ### **Embedded OLED + Control Interface**
 <img src="media/IMG_4962 (1).jpg" width="600">
