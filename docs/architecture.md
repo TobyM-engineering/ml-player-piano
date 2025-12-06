@@ -70,7 +70,7 @@ The firmware is split into four main modules:
 
 ---
 
-## 3. ML Model Architecture (Planned)
+## 3. ML Model Architecture
 
 ### **Data Sources**
 - `sample_pressures.csv` — measurements of force/dB vs solenoid pulse width  
