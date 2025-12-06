@@ -1,7 +1,3 @@
-[![](https://dcbadge.limes.pink/api/server/https://discord.com/invite/reenxNyht5?style=flat)](https://discord.com/invite/reenxNyht5)
-
-[![](https://img.youtube.com/vi/S7Bd992k368/0.jpg)](https://www.youtube.com/watch?v=S7Bd992k368)
-
 # ML-Assisted Player Piano (ESP32 + PCA9685 + Solenoids)
 
 This project is a full electro-mechanical system that turns a normal upright piano into a self-playing instrument using **MIDI, solenoids, machine-learning-assisted velocity mapping, and ESP32 firmware**.
