@@ -76,7 +76,7 @@ The firmware is split into four main modules:
 - `sample_pressures.csv` — measurements of force/dB vs solenoid pulse width  
 - `sample_velocities.csv` — MIDI velocity vs required pulse width
 
-### **Model Goals**
+### **Model Goal**
 - Predict solenoid pulse duration needed to strike a note at a desired volume
 - Produce smoother dynamics than simple linear mapping
 - Reduce mechanical stress by optimizing recovery windows
