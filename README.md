@@ -2,7 +2,7 @@
   <img src="media/IMG_4957.jpg" width="700">
 </p>
 
-# ML-Assisted Player Piano
+# Player Piano
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-ESP32-blue?style=flat-square">
   <img src="https://img.shields.io/badge/Firmware-C++-brightgreen?style=flat-square">
