@@ -1,23 +1,29 @@
-// safety_logic.cpp — Safety systems & hardware recovery
+// safety_logic.cpp — Safety, panic, and recovery logic
 //
-// Placeholder module for all of the “this thing will not brake my piano” logic.
+// This file is reserved for the safety systems used by the player piano firmware.
 //
-// Planned responsibilities:
-//  - Global panic handler to force all solenoids OFF
-//  - Debounced panic button input
-//  - Detection of over-long note pulses and forced shutoff
-//  - Monitoring / recovering PCA9685 boards when they stop ACKing I²C
-//  - Temperature-based derating rules and UI warnings
+// In the current working version, this logic still lives inside main.cpp.
+// It includes:
 //
-// In the current firmware, this behavior is implemented in main.cpp in:
+// - Panic button / all-notes-off behavior
+// - Stuck-note timeout protection
+// - Maximum solenoid activation limits
+// - Temperature monitoring
+// - PCA9685 communication checks
+// - PCA recovery attempts
+// - Automatic channel shutoff
+// - Safe startup behavior with all outputs forced off
 //
-//   - panicAllNotesOff()
-//   - handlePanicButton()
-//   - pcaRecoverIndex(), recoverPCA3(), recoverPCA4()
-//   - midi_updatePCA() safety timeout logic
+// This system uses many high-current 12V solenoids, so safety logic is important.
+// A software or communication failure should not leave a solenoid energized.
 //
-// Once refactored, main.cpp will just call small, clear functions like:
+// Safety goals:
 //
-//   void safety_init();
-//   void safety_handlePanicButton();
-//   void safety_updatePcaWatchdogs();
+// - Never leave a solenoid on indefinitely
+// - Shut off outputs during panic mode
+// - Recover or disable PCA boards if communication fails
+// - Monitor temperature during long playback
+// - Protect the piano action, MOSFETs, PCA boards, and power system
+//
+// This file is currently a documentation placeholder while the firmware is
+// being refactored from the original working main.cpp implementation.
