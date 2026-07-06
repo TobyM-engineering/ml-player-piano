@@ -99,82 +99,48 @@ Hardware diagrams: **`hardware/` folder**
 Entry point: **`firmware/main.cpp`**
 
 ---
-(The coolest Part)
-🎼 Machine Learning for Human-Like Piano Dynamics
+## The Coolest Part: Why Machine Learning Is Needed for Human-Like Piano Dynamics
 
-One of the hardest parts of any DIY player piano or just player pianos in general, is avoiding the robotic sound you get when the system simply reads MIDI velocity values and triggers solenoids.
-MIDI only tells you two things about a note:
+One of the hardest parts of building a DIY player piano is avoiding the robotic sound that happens when the system simply reads MIDI velocity values and triggers solenoids.
 
-Which key to play
+MIDI only tells the system two main things about a note:
 
-How fast the key should be played (velocity 1–127)
+* Which key to play
+* How fast the key should be played, from velocity 1–127
 
-But MIDI velocity is not the same as real hammer force, and it contains zero information about the true sound level of a physical piano.
-So if you directly map MIDI velocity → PWM, every key ends up sounding stiff, uneven, or mechanical.
+But MIDI velocity is not the same as real hammer force, and it does not directly describe the true sound level of a physical piano.
 
-To fix this, I collected real data.
+If MIDI velocity is directly mapped to solenoid power, the piano can sound stiff, uneven, or mechanical.
 
-📊 Data Collection: Decibel Measurements Per Solenoid
+This is where machine learning becomes useful.
 
-I used a calibrated decibel meter to measure how loud each solenoid strikes the string at different PWM pulse widths.
-For every solenoid, I logged:
+Each solenoid and piano key responds slightly differently because of friction, key weight, spring tension, hammer behavior, and mechanical differences across all 88 keys. That means one universal formula does not work perfectly for every note.
 
-Solenoid ID
+A more advanced version of the system would collect data from each key, such as:
 
-PWM duty cycle
+* Solenoid ID
+* PWM duty cycle
+* Pulse duration
+* Measured sound level in dB
+* Original MIDI velocity
 
-Pulse duration
+This data could be used to train a model that learns how each individual key responds to different power levels.
 
-Measured dB (sound intensity)
+The relationship between MIDI velocity, solenoid force, hammer speed, and actual loudness is not perfectly linear. A human pianist naturally adjusts finger pressure, timing, and touch to make notes sound musical. A raw MIDI file does not contain all of those details.
 
-Original MIDI velocity
+A machine learning layer could help by learning:
 
-This produced a dataset showing how each individual key responds to different energies.
-Because every solenoid + key mechanism is slightly different (tension, friction, mass, age), the system cannot rely on one universal formula — it needs per-solenoid correction.
+* How hard each solenoid should strike for a desired loudness
+* How to smooth out jumps between soft and loud notes
+* How to balance loudness across all 88 keys
+* How to make chords sound more even
+* How to make crescendos and phrasing feel less robotic
 
-🤖 Why Machine Learning Is Needed
+Instead of directly converting MIDI velocity into solenoid power, the system could use a learned correction table that the ESP32 reads in real time.
 
-The relationship between:
+The goal is to transform basic MIDI data into more expressive, natural-sounding piano dynamics.
 
-MIDI velocity
-
-Physical solenoid force
-
-Hammer speed
-
-Actual loudness (dB)
-
-…is non-linear and varies across all 88 keys.
-
-A human pianist naturally adjusts finger pressure, timing, and key speed to produce expressive dynamics.
-A raw MIDI file does not include those subtleties.
-
-The ML model compensates by learning:
-
-How hard each solenoid must strike to sound like a given velocity
-
-How to smooth out jumps between velocities (avoiding robotic jumps in loudness)
-
-Timing corrections so repeated notes feel more natural
-
-How to equalize loudness across all keys so chords sound balanced
-
-🎹 Result: More Expressive, Human-Like Playback
-
-After training the model, it outputs a mapping table the ESP32 uses in real time.
-This allows the player piano to:
-
-Produce consistent loudness across all keys
-
-Reduce mechanical harshness
-
-Imitate human-style touch response
-
-Create smoother crescendos and phrasing instead of "MIDI stiffness"
-
-In short:
-
-The ML layer transforms simple MIDI velocity data into expressive, natural-sounding piano dynamics that feel far more human and musical.
+In short, machine learning is useful because it can help bridge the gap between digital MIDI instructions and the physical behavior of a real piano.
 
 ---
 
