@@ -1,17 +1,39 @@
-// pwm_controller.cpp — Solenoid PWM & pulse controller
+// pwm_controller.cpp — Velocity mapping and solenoid PWM control
 //
-// Placeholder module describing how the system drives the 88 piano keys.
+// This file is reserved for the PWM output portion of the player piano firmware.
 //
-// Planned responsibilities:
-//  - Map MIDI velocity → PWM duty cycle and pulse width
-//  - Maintain per-key NoteState (isOn, pulseEnd, readyAt, etc.)
-//  - Convert logical key indices → { PCA9685 board, hardware channel }
-//  - Handle timing for fast retriggers and back-to-back notes
-//  - Provide a small API such as:
+// In the current working version, this logic still lives inside main.cpp.
+// It includes:
 //
-//      void pwm_init();
-//      void pwm_noteOn(uint8_t logicalKey, uint8_t velocity, float volumeFactor);
-//      void pwm_update();   // called each loop to end pulses and force-off notes
+// - MIDI velocity to PWM conversion
+// - Solenoid pulse-width control
+// - Per-note timing and recovery windows
+// - Volume scaling from the left/right control knobs
+// - Compensation for different key ranges
+// - PCA9685 output writing
+// - Active-low MOSFET output logic
+// - Repeated writes to improve output reliability
 //
-// Currently this logic lives in main.cpp (`midi_velocityToPWM`, `noteStates[]`,
-// `pcaWriteLogical`, and `midi_updatePCA`).
+// The purpose of this module is to convert musical intent into physical motion.
+//
+// MIDI velocity alone does not directly equal piano loudness, so the firmware
+// uses tuned velocity mapping to decide how strongly each solenoid should strike.
+//
+// Simplified concept:
+//
+// MIDI velocity
+//      ↓
+// volume scaling
+//      ↓
+// tuned velocity mapping
+//      ↓
+// PWM duty cycle + pulse duration
+//      ↓
+// PCA9685 output
+//      ↓
+// MOSFET driver
+//      ↓
+// solenoid strike
+//
+// This file is currently a documentation placeholder while the working code
+// remains inside main.cpp.
