@@ -1,18 +1,37 @@
-// midi_handler.cpp — BLE-MIDI parsing & event buffering
+// midi_handler.cpp — MIDI parsing and scheduling module
 //
-// This file is a placeholder for a future refactor. In the current hardware
-// build, all of the MIDI logic still lives in main.cpp.
+// This file is reserved for the MIDI handling portion of the player piano firmware.
 //
-// Planned responsibilities:
-//  - Own the BLE-MIDI characteristic callbacks
-//  - Decode raw BLE packets into Note On / Note Off events
-//  - Apply octave shift and per-hand volume scaling
-//  - Push events into a ring buffer for timing-accurate processing
+// In the current working version, this logic still lives inside main.cpp.
+// It includes:
 //
-// The idea is that main.cpp will call something like:
+// - BLE-MIDI packet decoding
+// - Note On / Note Off parsing
+// - MIDI channel filtering for left-hand and right-hand playback
+// - Octave shifting
+// - Velocity scaling from the control panel
+// - Predictive MIDI event buffering
+// - Handling repeated notes and overlapping notes
+// - Timing compensation for solenoid release and re-trigger behavior
 //
-//    void midi_init();
-//    void midi_onBlePacket(...);
-//    void midi_processBufferedEvents();
+// The goal of this module is to eventually separate MIDI input and scheduling
+// from the main firmware loop so the system is easier to read, test, and expand.
 //
-// once this code is split out of main.cpp.
+// Current data flow:
+//
+// BLE MIDI input
+//      ↓
+// MIDI parser
+//      ↓
+// note / velocity / channel extraction
+//      ↓
+// predictive event buffer
+//      ↓
+// PWM controller
+//      ↓
+// PCA9685 boards + MOSFET drivers
+//      ↓
+// solenoids press piano keys
+//
+// This file is currently a documentation placeholder while the firmware is
+// being refactored from the original working main.cpp implementation.
