@@ -11,7 +11,8 @@
   <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square">
 </p>
 
-A full electromechanical player piano system combining embedded C++, real-time MIDI processing, PCA9685-controlled solenoids, and a machine-learning velocity model trained on decibel measurements to produce human-like dynamics. Built to retrofit an early-1900s pneumatic piano into a modern expressive instrument.
+A full electromechanical player piano system combining embedded C++, real-time MIDI processing, PCA9685-controlled solenoids, MOSFET driver modules, and custom velocity mapping informed by decibel measurements and machine-learning experiments to produce more expressive, human-like dynamics. Built to retrofit an early-1900s pneumatic piano into a modern self-playing instrument.
+
 
 > ⚠️ This repository is not fully documented yet — more diagrams, notes, and explanations will be added soon.  
 > 🎥 See it in action below!
