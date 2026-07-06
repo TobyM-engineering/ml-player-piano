@@ -1,4 +1,6 @@
-// main.cpp — ML Player Piano firmware entry point
+// main.cpp — Player Piano firmware entry point
+//
+// Annotated and organized with AI for easier understanding
 //
 // This file currently contains the full working firmware for the ESP32-based
 // player piano:
