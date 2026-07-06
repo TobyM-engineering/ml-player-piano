@@ -1,6 +1,6 @@
 # ML-Assisted Player Piano — System Architecture
 
-This document provides a detailed technical overview of the ML-assisted player piano system, including hardware layout, firmware modules, dataflow, safety architecture, and the machine-learning pipeline used to create human-like key dynamics.
+This document provides a technical overview of the ML-assisted player piano system, including hardware layout, firmware modules, dataflow, safety architecture, and the velocity-mapping process used to create more human-like key dynamics.
 
 ---
 
@@ -48,7 +48,7 @@ Specifications:
 - PCA9685 PWM modulation per channel  
 - Sustain pedal driven using a high-force dual-solenoid assembly  
 
-PWM values correspond to **striking strength** and are computed from either the hand-tuned mapping or the ML-generated velocity model.
+PWM values correspond to striking strength and are computed from a tuned velocity-mapping table. Machine-learning experiments and decibel measurements were used to help inform and improve this mapping.
 
 ---
 
@@ -137,7 +137,7 @@ The scheduler accounts for:
 - Key bounce behavior  
 - Multi-note timing alignment  
 - Universal key delay (max actuation latency)  
-- ML-corrected velocity → PWM mappings  
+- ML-informed / hand-tuned velocity → PWM mappings
 
 This ensures the piano plays rhythmically accurate and synchronized with the incoming MIDI file.
 
@@ -148,8 +148,8 @@ Converts desired key dynamics into electrical drive values.
 
 Core functions:
 
-- Duty cycle + pulse width calculation  
-- ML-informed velocity scaling  
+- Duty cycle + pulse width calculation
+- Tuned velocity scaling informed by testing and ML experiments
 - Temperature-aware derating  
 - Simultaneous multi-key strike management  
 - MOSFET-safe activation timing  
@@ -173,58 +173,48 @@ The firmware is designed so hardware failure **never leads to runaway solenoids*
 
 ---
 
-# 3. Machine Learning Architecture
+3. Machine Learning / Velocity Mapping Architecture
 
-A small regression model is used to generate **human-like** dynamics from basic MIDI velocity data.
+Machine learning was used as an offline development tool to help understand how MIDI velocity, solenoid power, pulse duration, and real acoustic loudness relate to each other.
 
-MIDI velocity alone is extremely coarse and often creates a robotic sound.  
-Humans vary **force, timing, and key travel**, so solenoids must be tuned to imitate these nuances.
+The ESP32 does not run a live ML model in real time. Instead, the final firmware uses tuned velocity-mapping logic that was developed through testing, measurement, and ML-assisted analysis.
+
+MIDI velocity alone is extremely limited and often creates a robotic sound. Humans vary force, timing, and touch, so solenoids need correction to imitate more natural dynamics.
 
 ---
 
 ## 3.1 Data Collection
-To build the dataset:
+To build and improve the velocity mapping:
 
-- Each solenoid was tested individually.  
-- A calibrated **decibel meter** measured real acoustic loudness from key strikes.  
-- Pulse width and PWM duty cycles were swept across ranges.  
-- For each solenoid:
-  - Strike strength  
-  - Acoustic output (dB)  
-  - Mechanical lag time  
-  - Required recovery window  
-  were recorded.
+Individual solenoids were tested at different PWM values
+Pulse widths and duty cycles were adjusted
+Acoustic loudness was compared across different keys
+Timing, strike strength, and recovery behavior were tuned
 
-This allowed the system to model **how solenoid energy translates into real musical volume**.
+This helped show how electrical drive energy translates into real piano dynamics.
 
 ---
 
 ## 3.2 Model Goals
-The ML model attempts to:
+The ML-assisted analysis was used to help:
 
-- Map **MIDI velocity → PWM + pulse length**  
-- Normalize variations between individual solenoids  
-- Produce consistent loudness across the keyboard  
-- Introduce micro-timing variation for human-like expression  
-- Reduce mechanical stress by optimizing recovery times  
-- Avoid robotic-sounding playback  
+Improve MIDI velocity → PWM mapping
+Reduce uneven loudness between keys
+Smooth out harsh jumps between velocity levels
+Make chords sound more balanced
+Reduce robotic-sounding playback
+Create a more expressive final mapping for the firmware
 
 ---
 
 ## 3.3 Model Pipeline
-Implemented in `ml-model/model_training.ipynb`:
+The machine-learning work was used as an offline tuning process:
 
-1. Load datasets (`sample_pressures.csv`, `sample_velocities.csv`)  
-2. Clean noisy readings  
-3. Fit multiple regression models:
-   - Linear regression  
-   - Polynomial regression  
-   - Gradient boosting (future work)  
-4. Evaluate predicted vs actual loudness  
-5. Export:
-   - C++ lookup table for real-time use  
-   - Optional `.pkl` ML model  
-
+Collect test data from key strikes
+Compare PWM, pulse duration, and perceived loudness
+Test regression-style mappings
+Use the results to improve the final velocity table
+Implement the final mapping logic in the ESP32 firmware
 ---
 
 # 4. System Control Flow
@@ -243,13 +233,13 @@ User controls → main loop → UI + mode routing
 ---
 
 # 5. Summary
-This project transforms a damaged early-1900s pneumatic player piano into a modern, ML-enhanced, fully electromechanical instrument. The architecture blends:
+This project transforms a damaged early-1900s pneumatic player piano into a modern, ML-assisted electromechanical instrument. The architecture blends:
 
-- Embedded systems engineering  
-- Real-time control loops  
-- Machine learning  
-- Hardware actuation  
-- Music technology  
+Embedded systems engineering
+Real-time MIDI processing
+Velocity mapping
+Hardware actuation
+Music technology
 
-…into a system capable of expressive, dynamic, and accurate piano performance.
+The result is a self-playing piano system designed to sound more expressive and less robotic by tuning how digital MIDI velocity is translated into physical key motion.
 
