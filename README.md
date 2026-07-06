@@ -87,6 +87,64 @@ Anyone is welcome to clone or fork this project to learn from it or build their 
 Hardware diagrams: **`hardware/` folder**
 
 ---
+---
+
+# 🛠 Hardware
+
+The hardware system uses an ESP32 microcontroller to control 88 piano key solenoids through PCA9685 PWM driver boards and MOSFET driver modules.
+
+## Main Hardware Components
+
+- ~88 × 12V key solenoids
+- 6 × PCA9685 16-channel PWM driver boards
+- 88 × MOSFET driver channels
+- ESP32 microcontroller
+- 12V 100A power supply
+- 12V to 5V buck converter for logic power
+- I²C OLED display
+- Buttons, switches, and potentiometers for user controls
+- Separate higher-current sustain pedal solenoid driver
+- Power distribution terminal blocks / bus bars
+
+Hardware diagrams are stored in the **[`hardware/`](hardware/)** folder.
+
+---
+
+# 🧩 Hardware Diagrams
+
+## Full-System Wiring Diagram
+
+[View wiring_diagram.png](hardware/wiring_diagram.png)
+
+<p align="center">
+  <img src="hardware/wiring_diagram.png" width="800">
+</p>
+
+This diagram shows the full system architecture: ESP32 control, PCA9685 PWM boards, MOSFET driver modules, 12V power distribution, buck converter, OLED display, user controls, key solenoids, and sustain pedal driver.
+
+---
+
+## PCA9685 Layout
+
+[View pca9685_layout.png](hardware/pca9685_layout.png)
+
+<p align="center">
+  <img src="hardware/pca9685_layout.png" width="800">
+</p>
+
+This diagram shows how the 6 PCA9685 PWM driver boards are organized to control all 88 piano keys. Each PCA9685 provides 16 PWM channels, giving up to 96 total outputs.
+
+---
+
+## Solenoid Driver Schematic
+
+[View solenoid_driver_schematic.png](hardware/solenoid_driver_schematic.png)
+
+<p align="center">
+  <img src="hardware/solenoid_driver_schematic.png" width="800">
+</p>
+
+This simplified schematic shows one piano key solenoid driver channel. The PCA9685 PWM output controls a MOSFET driver module, which switches a 12V solenoid using a shared power rail and common ground. This circuit is repeated across the piano keys.
 
 ## Firmware Modules
 
